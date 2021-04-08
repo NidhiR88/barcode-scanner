@@ -47,18 +47,18 @@ class ScannerComponent extends Component {
   }
 
   onDetect(result) {
-    debugger;
-    console.log(result.codeResult.code);
+    console.log('from onDetect func', result.codeResult.code);
     //check if valid result
     if (result.codeResult.code) {
       var scannedCode = result.codeResult.code;
-      this.setState({ barcodes: scannedCode }, () => {
-        Quagga.stop();
-      });
+      this.setState({ barcodes: scannedCode });
+      Quagga.stop();
     }
   }
 
   onProcessed = (result) => {
+    console.log('from onProcessed func', result);
+
     var drawingCtx = Quagga.canvas.ctx.overlay,
       drawingCanvas = Quagga.canvas.dom.overlay;
     if (result) {
@@ -103,26 +103,31 @@ class ScannerComponent extends Component {
   render() {
     return (
       <React.Fragment>
-        <div id="interactive" className="viewport">
-          <video
-            className="videoInsert"
-            autoPlay={true}
-            preload="auto"
-            src=""
-            muted={true}
-            playsInline={true}
-          ></video>
-          <canvas
-            className="drawingBuffer videoInsert"
-            // styles={{ top: '50px', left: '50px', position: 'absolute' }}
-          ></canvas>
-        </div>
-        {this.state.barcodes.length !== 0 && (
-          <div>
-            <h1>Code:</h1>
-            {this.state.barcodes && this.state.barcodes.codeResult}
+        <div className="scan-barcode">
+          <span>
+            <h2>Barcode Scanner</h2>
+          </span>
+          <div id="interactive" className="viewport">
+            <video
+              className="videoInsert"
+              autoPlay={true}
+              preload="auto"
+              src=""
+              muted={true}
+              playsInline={true}
+            ></video>
+            <canvas
+              className="drawingBuffer videoInsert"
+              styles={{ top: '0px', left: '0px', position: 'absolute' }}
+            ></canvas>
           </div>
-        )}
+          {/* {this.state.barcodes.length !== 0 && ( */}
+          <div className="barcode-result">
+            <h1>Code:</h1>
+            {this.state.barcodes.codeResult}
+          </div>
+          {/* )} */}
+        </div>
       </React.Fragment>
     );
   }
