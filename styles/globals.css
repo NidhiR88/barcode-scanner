@@ -1,10 +1,11 @@
 html,
 body {
+  background-color: black;
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 
 a {
@@ -15,22 +16,28 @@ a {
 * {
   box-sizing: border-box;
 }
-/* .scan-barcode {
-  display: block;
+.scan-barcode {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-} */
-.videoInsert {
-  display: block;
-  margin: auto;
 }
 
-.home-page {
-  width: 100%;
-  background-color: violet;
+.videoInsert {
+  width: 50%;
+  margin: 0 auto;
 }
+
+canvas {
+  top: 0px;
+  left: 0px;
+  position: absolute;
+}
+
 .barcode-result {
   text-align: center;
+  font-size: 10px;
 }
-h2 {
+h2,
+h1 {
   text-align: center;
 }

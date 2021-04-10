@@ -4,8 +4,8 @@ import Quagga from 'quagga';
 class ScannerComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { barcodes: [] };
-    // this.onDetect = this.onDetect.bind(this);
+    this.state = { barcodes: '' };
+    this.onDetect = this.onDetect.bind(this);
   }
 
   componentDidMount() {
@@ -15,6 +15,8 @@ class ScannerComponent extends Component {
   initializeScanning() {
     Quagga.init(
       {
+        name: 'Live',
+        type: 'LiveStream',
         constraints: {
           facingMode: 'environment',
         },
@@ -46,7 +48,7 @@ class ScannerComponent extends Component {
     Quagga.onProcessed(this.onProcessed);
   }
 
-  onDetect(result) {
+  onDetect = (result) => {
     console.log('from onDetect func', result.codeResult.code);
     //check if valid result
     if (result.codeResult.code) {
@@ -54,13 +56,12 @@ class ScannerComponent extends Component {
       this.setState({ barcodes: scannedCode });
       Quagga.stop();
     }
-  }
+  };
 
   onProcessed = (result) => {
-    console.log('from onProcessed func', result);
+    var drawingCtx = Quagga.canvas.ctx.overlay;
+    var drawingCanvas = Quagga.canvas.dom.overlay;
 
-    var drawingCtx = Quagga.canvas.ctx.overlay,
-      drawingCanvas = Quagga.canvas.dom.overlay;
     if (result) {
       if (result.boxes) {
         drawingCtx.clearRect(
@@ -116,15 +117,12 @@ class ScannerComponent extends Component {
               muted={true}
               playsInline={true}
             ></video>
-            <canvas
-              className="drawingBuffer videoInsert"
-              styles={{ top: '0px', left: '0px', position: 'absolute' }}
-            ></canvas>
+            <canvas className="drawingBuffer videoInsert"></canvas>
           </div>
           {/* {this.state.barcodes.length !== 0 && ( */}
           <div className="barcode-result">
             <h1>Code:</h1>
-            {this.state.barcodes.codeResult}
+            {this.state.barcodes}
           </div>
           {/* )} */}
         </div>
